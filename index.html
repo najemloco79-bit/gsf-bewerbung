@@ -17,514 +17,83 @@
     --gsf-text: #c8e6c8;
     --gsf-muted: #6a9a6a;
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--gsf-dark);
-    color: var(--gsf-text);
-    font-family: 'Oswald', sans-serif;
-    font-weight: 300;
-    overflow-x: hidden;
-  }
-
-  /* ── NOISE TEXTURE OVERLAY ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.4;
-  }
-
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    position: relative;
-    background:
-      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(26,122,26,0.25) 0%, transparent 70%),
-      linear-gradient(180deg, #000 0%, var(--gsf-dark) 100%);
-    padding: 60px 20px;
-    overflow: hidden;
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(46,204,46,0.015) 2px,
-        rgba(46,204,46,0.015) 4px
-      );
-    pointer-events: none;
-  }
-
-  .hero-tag {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.3em;
-    color: var(--gsf-bright);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    opacity: 0;
-    animation: fadeUp 0.6s 0.2s forwards;
-  }
-
-  .hero-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(3rem, 10vw, 8rem);
-    line-height: 0.9;
-    letter-spacing: 0.05em;
-    color: #fff;
-    text-shadow:
-      0 0 40px rgba(46,204,46,0.4),
-      0 0 80px rgba(46,204,46,0.15);
-    opacity: 0;
-    animation: fadeUp 0.7s 0.4s forwards;
-  }
-
-  .hero-title span {
-    color: var(--gsf-accent);
-    display: block;
-  }
-
-  .hero-sub {
-    font-size: 1.1rem;
-    font-weight: 400;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--gsf-muted);
-    margin-top: 24px;
-    opacity: 0;
-    animation: fadeUp 0.7s 0.6s forwards;
-  }
-
-  .hero-divider {
-    width: 120px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gsf-bright), transparent);
-    margin: 32px auto;
-    opacity: 0;
-    animation: fadeUp 0.6s 0.8s forwards;
-  }
-
-  .hero-info {
-    display: flex;
-    gap: 40px;
-    flex-wrap: wrap;
-    justify-content: center;
-    opacity: 0;
-    animation: fadeUp 0.7s 1s forwards;
-  }
-
-  .hero-info-item {
-    text-align: center;
-  }
-
-  .hero-info-item .label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    color: var(--gsf-muted);
-    text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-
-  .hero-info-item .value {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--gsf-accent);
-    letter-spacing: 0.1em;
-  }
-
-  /* ── NAV ── */
-  nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(10,26,10,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(46,204,46,0.15);
-    padding: 0 40px;
-    display: flex;
-    align-items: center;
-    gap: 0;
-    overflow-x: auto;
-  }
-
-  nav a {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--gsf-muted);
-    text-decoration: none;
-    padding: 16px 20px;
-    white-space: nowrap;
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s;
-  }
-
-  nav a:hover {
-    color: var(--gsf-accent);
-    border-bottom-color: var(--gsf-accent);
-  }
-
-  nav .nav-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.2rem;
-    color: var(--gsf-accent);
-    letter-spacing: 0.1em;
-    margin-right: 20px;
-    flex-shrink: 0;
-  }
-
-  /* ── SECTIONS ── */
-  section {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 80px 30px;
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.7s, transform 0.7s;
-  }
-
-  section.visible {
-    opacity: 1;
-    transform: none;
-  }
-
-  .section-header {
-    display: flex;
-    align-items: baseline;
-    gap: 16px;
-    margin-bottom: 48px;
-  }
-
-  .section-num {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--gsf-bright);
-    letter-spacing: 0.2em;
-  }
-
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    letter-spacing: 0.08em;
-    color: #fff;
-    line-height: 1;
-  }
-
-  .section-line {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(46,204,46,0.3), transparent);
-    margin-left: 16px;
-  }
-
-  /* ── CARDS ── */
-  .card {
-    background: var(--gsf-card);
-    border: 1px solid rgba(46,204,46,0.12);
-    border-left: 3px solid var(--gsf-bright);
-    padding: 28px 32px;
-    margin-bottom: 20px;
-    position: relative;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-
-  .card:hover {
-    border-left-color: var(--gsf-accent);
-    box-shadow: 0 0 30px rgba(46,204,46,0.08);
-  }
-
-  .card-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 3.5rem;
-    color: rgba(46,204,46,0.08);
-    position: absolute;
-    top: 8px;
-    right: 20px;
-    line-height: 1;
-    pointer-events: none;
-  }
-
-  .card-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.4rem;
-    letter-spacing: 0.1em;
-    color: var(--gsf-accent);
-    margin-bottom: 12px;
-  }
-
-  .card p {
-    font-size: 0.95rem;
-    line-height: 1.7;
-    color: var(--gsf-text);
-    font-weight: 300;
-  }
-
-  /* ── ÜBER MICH ── */
-  .profile-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2px;
-  }
-
-  .profile-item {
-    background: var(--gsf-card);
-    border: 1px solid rgba(46,204,46,0.1);
-    padding: 20px 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    transition: background 0.2s;
-  }
-
+  body { background: var(--gsf-dark); color: var(--gsf-text); font-family: 'Oswald', sans-serif; font-weight: 300; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; opacity: 0.4; }
+  .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(26,122,26,0.25) 0%, transparent 70%), linear-gradient(180deg, #000 0%, var(--gsf-dark) 100%); padding: 60px 20px; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(46,204,46,0.015) 2px, rgba(46,204,46,0.015) 4px); pointer-events: none; }
+  .hero-tag { font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; letter-spacing: 0.3em; color: var(--gsf-bright); text-transform: uppercase; margin-bottom: 20px; opacity: 0; animation: fadeUp 0.6s 0.2s forwards; }
+  .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 10vw, 8rem); line-height: 0.9; letter-spacing: 0.05em; color: #fff; text-shadow: 0 0 40px rgba(46,204,46,0.4), 0 0 80px rgba(46,204,46,0.15); opacity: 0; animation: fadeUp 0.7s 0.4s forwards; }
+  .hero-title span { color: var(--gsf-accent); display: block; }
+  .hero-sub { font-size: 1.1rem; font-weight: 400; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gsf-muted); margin-top: 24px; opacity: 0; animation: fadeUp 0.7s 0.6s forwards; }
+  .hero-divider { width: 120px; height: 2px; background: linear-gradient(90deg, transparent, var(--gsf-bright), transparent); margin: 32px auto; opacity: 0; animation: fadeUp 0.6s 0.8s forwards; }
+  .hero-info { display: flex; gap: 40px; flex-wrap: wrap; justify-content: center; opacity: 0; animation: fadeUp 0.7s 1s forwards; }
+  .hero-info-item { text-align: center; }
+  .hero-info-item .label { font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; color: var(--gsf-muted); text-transform: uppercase; margin-bottom: 4px; }
+  .hero-info-item .value { font-size: 1.1rem; font-weight: 600; color: var(--gsf-accent); letter-spacing: 0.1em; }
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(10,26,10,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(46,204,46,0.15); padding: 0 40px; display: flex; align-items: center; overflow-x: auto; }
+  nav a { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gsf-muted); text-decoration: none; padding: 16px 20px; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.2s; }
+  nav a:hover { color: var(--gsf-accent); border-bottom-color: var(--gsf-accent); }
+  nav .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; color: var(--gsf-accent); letter-spacing: 0.1em; margin-right: 20px; flex-shrink: 0; }
+  section { max-width: 1100px; margin: 0 auto; padding: 80px 30px; opacity: 0; transform: translateY(30px); transition: opacity 0.7s, transform 0.7s; }
+  section.visible { opacity: 1; transform: none; }
+  .section-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 48px; }
+  .section-num { font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; color: var(--gsf-bright); letter-spacing: 0.2em; }
+  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: 0.08em; color: #fff; line-height: 1; }
+  .section-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(46,204,46,0.3), transparent); margin-left: 16px; }
+  .card { background: var(--gsf-card); border: 1px solid rgba(46,204,46,0.12); border-left: 3px solid var(--gsf-bright); padding: 28px 32px; margin-bottom: 20px; position: relative; transition: border-color 0.2s, box-shadow 0.2s; }
+  .card:hover { border-left-color: var(--gsf-accent); box-shadow: 0 0 30px rgba(46,204,46,0.08); }
+  .card-num { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; color: rgba(46,204,46,0.08); position: absolute; top: 8px; right: 20px; line-height: 1; pointer-events: none; }
+  .card-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.1em; color: var(--gsf-accent); margin-bottom: 12px; }
+  .card p { font-size: 0.95rem; line-height: 1.7; color: var(--gsf-text); font-weight: 300; }
+  .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .profile-item { background: var(--gsf-card); border: 1px solid rgba(46,204,46,0.1); padding: 20px 24px; display: flex; flex-direction: column; gap: 4px; transition: background 0.2s; }
   .profile-item:hover { background: rgba(46,204,46,0.04); }
-
-  .profile-item .key {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    color: var(--gsf-muted);
-    text-transform: uppercase;
-  }
-
-  .profile-item .val {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #fff;
-    letter-spacing: 0.05em;
-  }
-
-  /* ── ERFAHRUNG TABLE ── */
-  .xp-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 8px;
-  }
-
-  .xp-table th {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    color: var(--gsf-muted);
-    text-transform: uppercase;
-    text-align: left;
-    padding: 12px 16px;
-    border-bottom: 1px solid rgba(46,204,46,0.15);
-  }
-
-  .xp-table td {
-    padding: 14px 16px;
-    font-size: 0.9rem;
-    border-bottom: 1px solid rgba(46,204,46,0.07);
-    color: var(--gsf-text);
-  }
-
+  .profile-item .key { font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; color: var(--gsf-muted); text-transform: uppercase; }
+  .profile-item .val { font-size: 1.1rem; font-weight: 600; color: #fff; letter-spacing: 0.05em; }
+  .xp-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  .xp-table th { font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; color: var(--gsf-muted); text-transform: uppercase; text-align: left; padding: 12px 16px; border-bottom: 1px solid rgba(46,204,46,0.15); }
+  .xp-table td { padding: 14px 16px; font-size: 0.9rem; border-bottom: 1px solid rgba(46,204,46,0.07); color: var(--gsf-text); }
   .xp-table tr:last-child td { border-bottom: none; }
-
   .xp-table tr:hover td { background: rgba(46,204,46,0.04); }
-
-  .rank-badge {
-    display: inline-block;
-    background: rgba(46,204,46,0.12);
-    border: 1px solid rgba(46,204,46,0.3);
-    color: var(--gsf-accent);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    padding: 3px 10px;
-    letter-spacing: 0.1em;
-  }
-
-  .current-badge {
-    background: rgba(200,168,75,0.12);
-    border-color: rgba(200,168,75,0.4);
-    color: var(--gsf-gold);
-  }
-
-  /* ── RANG LISTE ── */
-  .rank-list {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .rank-row {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 12px 20px;
-    background: var(--gsf-card);
-    border: 1px solid rgba(46,204,46,0.08);
-    transition: all 0.2s;
-  }
-
-  .rank-row:hover {
-    border-color: rgba(46,204,46,0.25);
-    transform: translateX(4px);
-  }
-
-  .rank-row.top {
-    border-left: 3px solid var(--gsf-gold);
-    background: rgba(200,168,75,0.04);
-  }
-
+  .rank-badge { display: inline-block; background: rgba(46,204,46,0.12); border: 1px solid rgba(46,204,46,0.3); color: var(--gsf-accent); font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; padding: 3px 10px; letter-spacing: 0.1em; }
+  .current-badge { background: rgba(200,168,75,0.12); border-color: rgba(200,168,75,0.4); color: var(--gsf-gold); }
+  .rank-list { display: flex; flex-direction: column; gap: 2px; }
+  .rank-row { display: flex; align-items: center; gap: 16px; padding: 12px 20px; background: var(--gsf-card); border: 1px solid rgba(46,204,46,0.08); transition: all 0.2s; }
+  .rank-row:hover { border-color: rgba(46,204,46,0.25); transform: translateX(4px); }
+  .rank-row.top { border-left: 3px solid var(--gsf-gold); background: rgba(200,168,75,0.04); }
   .rank-row.top .rank-n { color: var(--gsf-gold); }
-
-  .rank-n {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.6rem;
-    color: rgba(46,204,46,0.3);
-    width: 40px;
-    flex-shrink: 0;
-    text-align: right;
-  }
-
-  .rank-name {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #fff;
-    letter-spacing: 0.05em;
-  }
-
-  .rank-desc {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--gsf-muted);
-    letter-spacing: 0.1em;
-    margin-left: auto;
-  }
-
-  /* ── GOAL PILLS ── */
-  .goals {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 20px;
-  }
-
-  .goal {
-    background: transparent;
-    border: 1px solid rgba(46,204,46,0.25);
-    color: var(--gsf-text);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    padding: 8px 16px;
-    text-transform: uppercase;
-    transition: all 0.2s;
-  }
-
-  .goal:hover {
-    background: rgba(46,204,46,0.1);
-    border-color: var(--gsf-accent);
-    color: var(--gsf-accent);
-  }
-
-  /* ── QUOTE ── */
-  .quote-block {
-    border-left: 3px solid var(--gsf-bright);
-    padding: 20px 28px;
-    margin: 32px 0;
-    background: rgba(46,204,46,0.04);
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(1.2rem, 3vw, 1.8rem);
-    letter-spacing: 0.08em;
-    color: var(--gsf-accent);
-    line-height: 1.3;
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    border-top: 1px solid rgba(46,204,46,0.15);
-    padding: 40px 30px;
-    text-align: center;
-  }
-
-  footer .footer-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.5rem;
-    letter-spacing: 0.2em;
-    color: var(--gsf-bright);
-    text-shadow: 0 0 30px rgba(46,204,46,0.4);
-  }
-
-  footer p {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    color: var(--gsf-muted);
-    margin-top: 10px;
-  }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: none; }
-  }
-
-  /* ── SCROLLBAR ── */
+  .rank-n { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: rgba(46,204,46,0.3); width: 40px; flex-shrink: 0; text-align: right; }
+  .rank-name { font-size: 1rem; font-weight: 600; color: #fff; letter-spacing: 0.05em; }
+  .rank-desc { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; color: var(--gsf-muted); letter-spacing: 0.1em; margin-left: auto; }
+  .goals { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+  .goal { background: transparent; border: 1px solid rgba(46,204,46,0.25); color: var(--gsf-text); font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; letter-spacing: 0.1em; padding: 8px 16px; text-transform: uppercase; transition: all 0.2s; }
+  .goal:hover { background: rgba(46,204,46,0.1); border-color: var(--gsf-accent); color: var(--gsf-accent); }
+  .quote-block { border-left: 3px solid var(--gsf-bright); padding: 20px 28px; margin: 32px 0; background: rgba(46,204,46,0.04); font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.2rem, 3vw, 1.8rem); letter-spacing: 0.08em; color: var(--gsf-accent); line-height: 1.3; }
+  footer { border-top: 1px solid rgba(46,204,46,0.15); padding: 40px 30px; text-align: center; }
+  footer .footer-title { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: 0.2em; color: var(--gsf-bright); text-shadow: 0 0 30px rgba(46,204,46,0.4); }
+  footer p { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gsf-muted); margin-top: 10px; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: var(--gsf-dark); }
   ::-webkit-scrollbar-thumb { background: var(--gsf-green); }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 600px) {
-    .profile-grid { grid-template-columns: 1fr; }
-    .rank-desc { display: none; }
-    nav { padding: 0 16px; }
-    nav a { padding: 14px 12px; font-size: 0.6rem; }
-  }
+  @media (max-width: 600px) { .profile-grid { grid-template-columns: 1fr; } .rank-desc { display: none; } nav { padding: 0 16px; } nav a { padding: 14px 12px; font-size: 0.6rem; } }
 </style>
 </head>
 <body>
-
-<!-- HERO -->
 <div class="hero">
   <div class="hero-tag">// Grand RP — Offizielles Dokument</div>
-  <h1 class="hero-title">
-    Bewerbung<br>
-    <span>Leader</span>
-  </h1>
+  <h1 class="hero-title">Bewerbung<br><span>Leader</span></h1>
   <div class="hero-sub">Grove Street Families</div>
   <div class="hero-divider"></div>
   <div class="hero-info">
-    <div class="hero-info-item">
-      <div class="label">OOC Name</div>
-      <div class="value">Marc</div>
-    </div>
-    <div class="hero-info-item">
-      <div class="label">IC Name</div>
-      <div class="value">Michael Kalashnikov</div>
-    </div>
-    <div class="hero-info-item">
-      <div class="label">Spieler-ID</div>
-      <div class="value">#243336</div>
-    </div>
-    <div class="hero-info-item">
-      <div class="label">Discord</div>
-      <div class="value">0xmarkx0</div>
-    </div>
+    <div class="hero-info-item"><div class="label">OOC Name</div><div class="value">Marc</div></div>
+    <div class="hero-info-item"><div class="label">IC Name</div><div class="value">Michael Kalashnikov</div></div>
+    <div class="hero-info-item"><div class="label">Spieler-ID</div><div class="value">#243336</div></div>
+    <div class="hero-info-item"><div class="label">Discord</div><div class="value">0xmarkx0</div></div>
   </div>
 </div>
-
-<!-- NAV -->
 <nav>
   <div class="nav-logo">GSF</div>
   <a href="#about">01 Über mich</a>
@@ -534,60 +103,23 @@
   <a href="#concept">05 Orga-Konzept</a>
   <a href="#ranks">06 Rangfolge</a>
 </nav>
-
-<!-- 01 ÜBER MICH -->
 <section id="about">
-  <div class="section-header">
-    <span class="section-num">01</span>
-    <h2 class="section-title">Über Mich</h2>
-    <div class="section-line"></div>
-  </div>
+  <div class="section-header"><span class="section-num">01</span><h2 class="section-title">Über Mich</h2><div class="section-line"></div></div>
   <div class="profile-grid">
-    <div class="profile-item">
-      <span class="key">OOC Name</span>
-      <span class="val">Marc</span>
-    </div>
-    <div class="profile-item">
-      <span class="key">Alter (OOC)</span>
-      <span class="val">17</span>
-    </div>
-    <div class="profile-item">
-      <span class="key">IC Name</span>
-      <span class="val">Michael Kalashnikov</span>
-    </div>
-    <div class="profile-item">
-      <span class="key">Spieler-ID</span>
-      <span class="val">#243336</span>
-    </div>
-    <div class="profile-item">
-      <span class="key">Discord</span>
-      <span class="val">0xmarkx0</span>
-    </div>
-    <div class="profile-item">
-      <span class="key">Online-Zeiten</span>
-      <span class="val">Mo–Do: 6–8h &nbsp;|&nbsp; Fr–So: 8h+</span>
-    </div>
+    <div class="profile-item"><span class="key">OOC Name</span><span class="val">Marc</span></div>
+    <div class="profile-item"><span class="key">Alter (OOC)</span><span class="val">17</span></div>
+    <div class="profile-item"><span class="key">IC Name</span><span class="val">Michael Kalashnikov</span></div>
+    <div class="profile-item"><span class="key">Spieler-ID</span><span class="val">#243336</span></div>
+    <div class="profile-item"><span class="key">Discord</span><span class="val">0xmarkx0</span></div>
+    <div class="profile-item"><span class="key">Online-Zeiten</span><span class="val">Mo–Do: 6–8h | Fr–So: 8h+</span></div>
   </div>
 </section>
-
-<!-- 02 WARUM LEADER -->
 <section id="why">
-  <div class="section-header">
-    <span class="section-num">02</span>
-    <h2 class="section-title">Warum möchte ich Leader werden</h2>
-    <div class="section-line"></div>
-  </div>
-  <div class="quote-block">
-    "Ich habe eine klare Vision für die Zukunft der Grove Street — und die Entschlossenheit, sie umzusetzen."
-  </div>
+  <div class="section-header"><span class="section-num">02</span><h2 class="section-title">Warum möchte ich Leader werden</h2><div class="section-line"></div></div>
+  <div class="quote-block">"Ich habe eine klare Vision für die Zukunft der Grove Street — und die Entschlossenheit, sie umzusetzen."</div>
   <div class="card">
     <div class="card-num">02</div>
-    <p>
-      Ich möchte Leader der Grove Street Families werden, weil ich die Gang nicht nur führen,
-      sondern neu aufstellen will. Das Ghetto soll wieder das sein, was es einmal war: ein Ort,
-      den man respektiert und fürchtet — nicht durch sinnlose Gewalt, sondern durch konsequente
-      Präsenz, kluge Strukturen und starkes RP.
-    </p>
+    <p>Ich möchte Leader der Grove Street Families werden, weil ich die Gang nicht nur führen, sondern neu aufstellen will. Das Ghetto soll wieder das sein, was es einmal war: ein Ort, den man respektiert und fürchtet — nicht durch sinnlose Gewalt, sondern durch konsequente Präsenz, kluge Strukturen und starkes RP.</p>
     <div class="goals">
       <span class="goal">🤝 Zusammenhalt stärken</span>
       <span class="goal">💰 Einfluss & Macht ausbauen</span>
@@ -596,217 +128,57 @@
     </div>
   </div>
 </section>
-
-<!-- 03 QUALITÄTEN -->
 <section id="qualities">
-  <div class="section-header">
-    <span class="section-num">03</span>
-    <h2 class="section-title">Was zeichnet mich als Leader aus</h2>
-    <div class="section-line"></div>
-  </div>
-  <p style="font-size:0.95rem; line-height:1.8; margin-bottom:32px; color:var(--gsf-text);">
-    Ich bin eine führungsstarke, durchsetzungsfähige und soziale Person mit umfangreicher Gang-Erfahrung
-    auf Grand RP. Meine bisherige Laufbahn zeigt, dass ich in verschiedenen Organisationen verlässlich
-    Verantwortung übernommen und hohe Ränge erreicht habe:
-  </p>
+  <div class="section-header"><span class="section-num">03</span><h2 class="section-title">Was zeichnet mich als Leader aus</h2><div class="section-line"></div></div>
+  <p style="font-size:0.95rem;line-height:1.8;margin-bottom:32px;color:var(--gsf-text);">Ich bin eine führungsstarke, durchsetzungsfähige und soziale Person mit umfangreicher Gang-Erfahrung auf Grand RP. Meine bisherige Laufbahn zeigt, dass ich in verschiedenen Organisationen verlässlich Verantwortung übernommen und hohe Ränge erreicht habe:</p>
   <table class="xp-table">
-    <thead>
-      <tr>
-        <th>Organisation</th>
-        <th>IC Name</th>
-        <th>Rang</th>
-      </tr>
-    </thead>
+    <thead><tr><th>Organisation</th><th>IC Name</th><th>Rang</th></tr></thead>
     <tbody>
-      <tr>
-        <td>Ballas</td>
-        <td>Steve Cock</td>
-        <td><span class="rank-badge">RANG 9</span></td>
-      </tr>
-      <tr>
-        <td>Grove Street</td>
-        <td>Marcus Schnee</td>
-        <td><span class="rank-badge">RANG 9</span></td>
-      </tr>
-      <tr>
-        <td>Ballas</td>
-        <td>Nova Rekkles</td>
-        <td><span class="rank-badge">RANG 10</span></td>
-      </tr>
-      <tr>
-        <td>Marabunta Grande</td>
-        <td>Shawn Petric</td>
-        <td><span class="rank-badge">RANG 10</span></td>
-      </tr>
-      <tr>
-        <td>Bloods</td>
-        <td>Yugi Rekkles</td>
-        <td><span class="rank-badge current-badge">RANG 10 — AKTIV</span></td>
-      </tr>
+      <tr><td>Ballas</td><td>Steve Cock</td><td><span class="rank-badge">RANG 9</span></td></tr>
+      <tr><td>Grove Street</td><td>Marcus Schnee</td><td><span class="rank-badge">RANG 9</span></td></tr>
+      <tr><td>Ballas</td><td>Nova Rekkles</td><td><span class="rank-badge">RANG 10</span></td></tr>
+      <tr><td>Marabunta Grande</td><td>Shawn Petric</td><td><span class="rank-badge">RANG 10</span></td></tr>
+      <tr><td>Bloods</td><td>Yugi Rekkles</td><td><span class="rank-badge current-badge">RANG 10</span></td></tr>
     </tbody>
   </table>
 </section>
-
-<!-- 04 RP-KONZEPT -->
 <section id="rp">
-  <div class="section-header">
-    <span class="section-num">04</span>
-    <h2 class="section-title">Vorschläge zur RP-Verbesserung</h2>
-    <div class="section-line"></div>
-  </div>
-
-  <div class="card">
-    <div class="card-num">01</div>
-    <div class="card-title">Erhöhung der Ghetto-Präsenz</div>
-    <p>
-      Das Ghetto soll wieder ein gefürchteter Ort sein — nicht durch sinnlose Rumballerei,
-      sondern durch konsequente Präsenz, Sprays, Turfs und klare Reaktionen auf Eindringlinge.
-      Die Grove soll das Gebiet spürbar kontrollieren und jeden daran erinnern, wessen Hood das ist.
-    </p>
-  </div>
-
-  <div class="card">
-    <div class="card-num">02</div>
-    <div class="card-title">Geiselnahmen (Ammus)</div>
-    <p>
-      Ammus werden zu oft als lästige Pflicht abgehandelt. Dabei sind sie ein wichtiges Einkommens-
-      und RP-Tool. Ich will Ammus als feste, vorbereitete Aktionen etablieren — mit klarer Rollenverteilung,
-      guter Kommunikation und echten RP-Momenten statt schnellem Durchklicken.
-    </p>
-  </div>
-
-  <div class="card">
-    <div class="card-num">03</div>
-    <div class="card-title">Fort Zancudo Raids</div>
-    <p>
-      Fort-Zancudo-Überfälle bieten spannende, taktische Einsätze, die Teamarbeit und Planung fordern.
-      Ich möchte diese Aktionen wieder regelmäßig und strukturiert durchführen, um das RP
-      abwechslungsreicher zu gestalten und als starke Gang aufzutreten.
-    </p>
-  </div>
+  <div class="section-header"><span class="section-num">04</span><h2 class="section-title">Vorschläge zur RP-Verbesserung</h2><div class="section-line"></div></div>
+  <div class="card"><div class="card-num">01</div><div class="card-title">Erhöhung der Ghetto-Präsenz</div><p>Das Ghetto soll wieder ein gefürchteter Ort sein — nicht durch sinnlose Rumballerei, sondern durch konsequente Präsenz, Sprays, Turfs und klare Reaktionen auf Eindringlinge. Die Grove soll das Gebiet spürbar kontrollieren und jeden daran erinnern, wessen Hood das ist.</p></div>
+  <div class="card"><div class="card-num">02</div><div class="card-title">Geiselnahmen (Ammus)</div><p>Ammus werden zu oft als lästige Pflicht abgehandelt. Dabei sind sie ein wichtiges Einkommens- und RP-Tool. Ich will Ammus als feste, vorbereitete Aktionen etablieren — mit klarer Rollenverteilung, guter Kommunikation und echten RP-Momenten statt schnellem Durchklicken.</p></div>
+  <div class="card"><div class="card-num">03</div><div class="card-title">Fort Zancudo Raids</div><p>Fort-Zancudo-Überfälle bieten spannende, taktische Einsätze, die Teamarbeit und Planung fordern. Ich möchte diese Aktionen wieder regelmäßig und strukturiert durchführen, um das RP abwechslungsreicher zu gestalten und als starke Gang aufzutreten.</p></div>
 </section>
-
-<!-- 05 ORGA-KONZEPT -->
 <section id="concept">
-  <div class="section-header">
-    <span class="section-num">05</span>
-    <h2 class="section-title">Mein Konzept der Orga</h2>
-    <div class="section-line"></div>
-  </div>
-
-  <div class="card">
-    <div class="card-num">V</div>
-    <div class="card-title">Vision</div>
-    <p>
-      Die Grove Street Families sollen das Ghetto als gefährlichen und respektierten RP-Hotspot
-      zurückerobern — für organisiertes, intensives Gang-RP, das auf Grand RP seinesgleichen sucht.
-    </p>
-  </div>
-
-  <div class="card">
-    <div class="card-num">Z</div>
-    <div class="card-title">Ziele</div>
-    <p>
-      Starke Präsenz im Ghetto · Regelmäßige Ammus, Zinken & FZ-Raids · Einnahmen durch
-      koordinierte Aktionen sichern · Teamarbeit und Zusammenhalt nachhaltig stärken.
-    </p>
-  </div>
-
-  <div class="card">
-    <div class="card-num">A</div>
-    <div class="card-title">Ausbildung neuer Mitglieder</div>
-    <p>
-      Neue Mitglieder werden durch einen festen Ausbilder eingeführt — Regelwerk, Hotspots, HQ
-      und interne Abläufe werden vermittelt. Kein Mitglied soll verloren gehen, weil niemand
-      die Zeit hatte, es abzuholen.
-    </p>
-  </div>
+  <div class="section-header"><span class="section-num">05</span><h2 class="section-title">Mein Konzept der Orga</h2><div class="section-line"></div></div>
+  <div class="card"><div class="card-num">V</div><div class="card-title">Vision</div><p>Die Grove Street Families sollen das Ghetto als gefährlichen und respektierten RP-Hotspot zurückerobern — für organisiertes, intensives Gang-RP, das auf Grand RP seinesgleichen sucht.</p></div>
+  <div class="card"><div class="card-num">Z</div><div class="card-title">Ziele</div><p>Starke Präsenz im Ghetto · Regelmäßige Ammus, Zinken & FZ-Raids · Einnahmen durch koordinierte Aktionen sichern · Teamarbeit und Zusammenhalt nachhaltig stärken.</p></div>
+  <div class="card"><div class="card-num">A</div><div class="card-title">Ausbildung neuer Mitglieder</div><p>Neue Mitglieder werden durch einen festen Ausbilder eingeführt — Regelwerk, Hotspots, HQ und interne Abläufe werden vermittelt. Kein Mitglied soll verloren gehen, weil niemand die Zeit hatte, es abzuholen.</p></div>
 </section>
-
-<!-- 06 RANGFOLGE -->
 <section id="ranks">
-  <div class="section-header">
-    <span class="section-num">06</span>
-    <h2 class="section-title">Rangfolge innerhalb der Orga</h2>
-    <div class="section-line"></div>
-  </div>
+  <div class="section-header"><span class="section-num">06</span><h2 class="section-title">Rangfolge innerhalb der Orga</h2><div class="section-line"></div></div>
   <div class="rank-list">
-    <div class="rank-row top">
-      <div class="rank-n">12</div>
-      <div class="rank-name">O.G.</div>
-      <div class="rank-desc">Leader</div>
-    </div>
-    <div class="rank-row top">
-      <div class="rank-n">11</div>
-      <div class="rank-name">Vize O.G.</div>
-      <div class="rank-desc">Vize Leader</div>
-    </div>
-    <div class="rank-row">
-      <div class="rank-n">10</div>
-      <div class="rank-name">Mastermind Gangster</div>
-      <div class="rank-desc">Rechte Hand der Leaderschaft</div>
-    </div>
-    <div class="rank-row">
-      <div class="rank-n">09</div>
-      <div class="rank-name">Instructor</div>
-      <div class="rank-desc">Ausbilder</div>
-    </div>
-    <div class="rank-row">
-      <div class="rank-n">08</div>
-      <div class="rank-name">Turf Leader</div>
-      <div class="rank-desc">Leitet den Turf</div>
-    </div>
-    <div class="rank-row">
-      <div class="rank-n">07</div>
-      <div class="rank-name">Turfer</div>
-      <div class="rank-desc">Turft um Gebiete</div>
-    </div>
-    <div class="rank-row">
-      <div class="rank-n">06</div>
-      <div class="rank-name">Enforcer</div>
-      <div class="rank-desc"></div>
-    </div>
-    <div class="rank-row">
-      <div class="rank-n">05</div>
-      <div class="rank-name">Hustler</div>
-      <div class="rank-desc"></div>
-    </div>
-    <div class="rank-row">
-      <div class="rank-n">04</div>
-      <div class="rank-name">Grinder</div>
-      <div class="rank-desc"></div>
-    </div>
-    <div class="rank-row">
-      <div class="rank-n">03</div>
-      <div class="rank-name">Homie</div>
-      <div class="rank-desc"></div>
-    </div>
-    <div class="rank-row">
-      <div class="rank-n">02</div>
-      <div class="rank-name">Lil G</div>
-      <div class="rank-desc"></div>
-    </div>
-    <div class="rank-row" style="border-left:3px solid #c0392b; background:rgba(192,57,43,0.04);">
-      <div class="rank-n" style="color:#c0392b;">01</div>
-      <div class="rank-name">Snitch</div>
-      <div class="rank-desc" style="color:#c0392b;">Strafrang</div>
-    </div>
+    <div class="rank-row top"><div class="rank-n">12</div><div class="rank-name">O.G.</div><div class="rank-desc">Leader</div></div>
+    <div class="rank-row top"><div class="rank-n">11</div><div class="rank-name">Vize O.G.</div><div class="rank-desc">Vize Leader</div></div>
+    <div class="rank-row"><div class="rank-n">10</div><div class="rank-name">Mastermind Gangster</div><div class="rank-desc">Rechte Hand der Leaderschaft</div></div>
+    <div class="rank-row"><div class="rank-n">09</div><div class="rank-name">Instructor</div><div class="rank-desc">Ausbilder</div></div>
+    <div class="rank-row"><div class="rank-n">08</div><div class="rank-name">Turf Leader</div><div class="rank-desc">Leitet den Turf</div></div>
+    <div class="rank-row"><div class="rank-n">07</div><div class="rank-name">Turfer</div><div class="rank-desc">Turft um Gebiete</div></div>
+    <div class="rank-row"><div class="rank-n">06</div><div class="rank-name">Enforcer</div><div class="rank-desc"></div></div>
+    <div class="rank-row"><div class="rank-n">05</div><div class="rank-name">Hustler</div><div class="rank-desc"></div></div>
+    <div class="rank-row"><div class="rank-n">04</div><div class="rank-name">Grinder</div><div class="rank-desc"></div></div>
+    <div class="rank-row"><div class="rank-n">03</div><div class="rank-name">Homie</div><div class="rank-desc"></div></div>
+    <div class="rank-row"><div class="rank-n">02</div><div class="rank-name">Lil G</div><div class="rank-desc"></div></div>
+    <div class="rank-row" style="border-left:3px solid #c0392b;background:rgba(192,57,43,0.04);"><div class="rank-n" style="color:#c0392b;">01</div><div class="rank-name">Snitch</div><div class="rank-desc" style="color:#c0392b;">Strafrang</div></div>
   </div>
 </section>
-
-<!-- FOOTER -->
 <footer>
   <div class="footer-title">Grove Street Families</div>
   <p>// Bewerbung eingereicht von Marc · Michael Kalashnikov · #243336</p>
   <p style="margin-top:6px;">Grove Street for life.</p>
 </footer>
-
 <script>
-  // Scroll-reveal
   const sections = document.querySelectorAll('section');
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
+  const obs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1 });
   sections.forEach(s => obs.observe(s));
 </script>
 </body>
